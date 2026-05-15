@@ -1,0 +1,53 @@
+{
+  "name": "spatial-tether-filexplor",
+  "version": "0.1.0",
+  "description": "A file explorer for AI coding agents — generates a Filesystem Spatial Manifest (FSM) of a project so an agent can read bounded Room descriptions instead of dumping the whole repo into context.",
+  "license": "MIT",
+  "author": "Tetrahedroned",
+  "type": "commonjs",
+  "main": "dist/gateway.js",
+  "types": "dist/gateway.d.ts",
+  "bin": {
+    "spatial-tether-filexplor": "./dist/mcp-server.js",
+    "spatial-tether-ui": "./dist/http-server.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc --outDir dist && chmod +x dist/mcp-server.js dist/http-server.js",
+    "build:server": "tsc --outDir dist && chmod +x dist/mcp-server.js dist/http-server.js",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/mcp-server.js",
+    "server:dev": "ts-node src/http-server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "scan": "ts-node src/gateway.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "chokidar": "^5.0.0",
+    "express": "^5.2.1",
+    "ignore": "^6.0.2",
+    "jsonc-parser": "^3.3.1",
+    "tree-sitter": "^0.21.1",
+    "tree-sitter-go": "^0.23.4",
+    "tree-sitter-python": "^0.21.0",
+    "tree-sitter-rust": "^0.21.0",
+    "tree-sitter-typescript": "^0.23.2",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.18.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
