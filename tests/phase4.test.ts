@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
 import * as path from "path";
 import * as fs from "fs";
 import { performance } from "perf_hooks";
@@ -299,4 +299,23 @@ describe("Phase 4: persistence + incremental refresh + watcher", () => {
       }
     });
   });
+});
+
+// Sweep any test-fsm/test-session files this run left behind. Individual tests
+// try to clean up in their own `finally`, but a thrown assertion can skip that
+// path — without this sweep, .spatial-tether/ accumulates leaked cache files
+// across runs.
+afterAll(() => {
+  const dir = path.join(PROJECT_ROOT, ".spatial-tether");
+  try {
+    for (const name of fs.readdirSync(dir)) {
+      if (/^test-(fsm|session)-/.test(name)) {
+        try { fs.unlinkSync(path.join(dir, name)); } catch { /* ok */ }
+      }
+    }
+    // Remove the dir if it's empty after the sweep.
+    try { fs.rmdirSync(dir); } catch { /* not empty or already gone */ }
+  } catch {
+    // dir doesn't exist — nothing to clean
+  }
 });
